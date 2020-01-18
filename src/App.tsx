@@ -1,26 +1,65 @@
 import React from 'react';
-import logo from './logo.svg';
+import { connect } from 'react-redux';
 import './App.css';
+import { IApplicationState } from './store/store';
+import { fetchUserAsync } from './store/user.actions';
+import { IUserState } from './store/user.reducer';
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface IProps {
+  userDataRequest: IUserState;
+  fetchUserAsync: () => void;
 }
 
-export default App;
+const mapStateToProps = (state: IApplicationState) => {
+  return {
+    userDataRequest: state.user
+  }
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    fetchUserAsync: () => dispatch(fetchUserAsync()),
+  };
+};
+
+
+class App extends React.Component<IProps> {
+
+  public componentDidMount() {
+    this.props.fetchUserAsync();
+  }
+
+  public render() {
+    if (this.props.userDataRequest.fetching) {
+      return (
+        <div className="App">
+          <header className="App-header">
+            <p>Please wait...</p>
+          </header>
+        </div>
+      );
+    }
+
+    if (this.props.userDataRequest.fetchError) {
+      return (
+        <div className="App">
+          <header className="App-header">
+            <p>Sorry an error occured.</p>
+          </header>
+        </div>
+      );
+    }
+
+    const user = JSON.stringify(this.props.userDataRequest.user);
+    return (
+      <div className="App">
+        <header className="App-header">
+          <p>User: {user}</p>
+        </header>
+      </div>
+    );
+  }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
