@@ -1,4 +1,4 @@
-import { IUser } from './user.reducer';
+import { IUser } from '../reducers/user.reducer';
 
 export enum UserActions {
     USER_ACTION_START_FETCHING = 'USER_ACTION_START_FETCHING',

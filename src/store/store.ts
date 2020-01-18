@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
-import { IUserState, userReducer } from './user.reducer';
+import { IUserState, userReducer } from '../reducers/user.reducer';
 
 const logger = createLogger({
     // ...options

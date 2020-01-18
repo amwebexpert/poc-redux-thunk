@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { connect } from 'react-redux';
+import { fetchUserAsync } from './actions/user.actions';
 import './App.css';
+import { IUserState } from './reducers/user.reducer';
 import { IApplicationState } from './store/store';
-import { fetchUserAsync } from './store/user.actions';
-import { IUserState } from './store/user.reducer';
 
 interface IProps {
   userDataRequest: IUserState;
@@ -29,28 +30,29 @@ class App extends React.Component<IProps> {
     this.props.fetchUserAsync();
   }
 
-  public render() {
-    if (this.props.userDataRequest.fetching) {
-      return (
-        <div className="App">
-          <header className="App-header">
-            <p>Please wait...</p>
-          </header>
-        </div>
-      );
-    }
+  private renderPleaseWait(): React.ReactFragment {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <p>Please wait...</p>
+        </header>
+      </div>
+    );
+  }
 
-    if (this.props.userDataRequest.fetchError) {
-      return (
-        <div className="App">
-          <header className="App-header">
-            <p>Sorry an error occured.</p>
-          </header>
-        </div>
-      );
-    }
+  private renderFetchError(): React.ReactFragment {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <p>Sorry: an error occured</p>
+        </header>
+      </div>
+    );
+  }
 
+  private renderUserDetail(): React.ReactFragment {
     const user = JSON.stringify(this.props.userDataRequest.user);
+
     return (
       <div className="App">
         <header className="App-header">
@@ -58,6 +60,18 @@ class App extends React.Component<IProps> {
         </header>
       </div>
     );
+  }
+
+  public render() {
+    if (this.props.userDataRequest.fetching) {
+      return this.renderPleaseWait();
+    }
+
+    if (this.props.userDataRequest.fetchError) {
+      return this.renderFetchError();
+    }
+
+    return this.renderUserDetail();
   }
 
 }

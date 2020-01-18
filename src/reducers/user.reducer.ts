@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { UserActions } from './user.actions';
+import { UserActions } from '../actions/user.actions';
 
 export interface IUser {
     username: string;
