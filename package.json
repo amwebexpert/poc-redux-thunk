@@ -1,5 +1,5 @@
 {
-  "name": "poc-redux-with-saga",
+  "name": "poc-redux-with-thunk",
   "version": "0.1.0",
   "private": true,
   "scripts": {
