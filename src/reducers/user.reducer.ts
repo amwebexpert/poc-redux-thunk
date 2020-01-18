@@ -1,11 +1,6 @@
 import { Reducer } from 'redux';
 import { UserActions } from '../actions/user.actions';
-
-export interface IUser {
-    username: string;
-    firstName: string;
-    lastName: string;
-}
+import { IUser } from '../api/IUser';
 
 export interface IUserState {
     user?: IUser;

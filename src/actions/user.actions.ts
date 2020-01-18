@@ -1,4 +1,4 @@
-import { IUser } from '../reducers/user.reducer';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export enum UserActions {
     USER_ACTION_START_FETCHING = 'USER_ACTION_START_FETCHING',
@@ -11,11 +11,15 @@ export const fetchUserAsync = () => {
     return (dispatch: any) => {
         dispatch({ type: UserActions.USER_ACTION_START_FETCHING });
 
-        // Simulated async call using setTimeout
-        setTimeout(() => {
-            const mockUser: IUser = { username: 'amwebexpert', firstName: 'Andre', lastName: 'Masson' };
-            dispatch({ type: UserActions.USER_ACTION_DATA_RETRIEVED, payload: mockUser });
-        }, 3000);
+        axios.get('https://jsonplaceholder.typicode.com/users/1')
+            .then((response: AxiosResponse) => {
+                console.dir(response);
+                dispatch({ type: UserActions.USER_ACTION_DATA_RETRIEVED, payload: response.data });
+            })
+            .catch((e: AxiosError) => {
+                console.log(e);
+                dispatch({ type: UserActions.USER_ACTION_DATA_ERROR });
+            });
     };
 
 };
